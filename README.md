@@ -1,66 +1,62 @@
-# 🌐 Longest Prefix Match — Network Demonstration
+# 🌐 LPM Network Demonstration
 
-<p align="center">
+<div align="center">
 
-<img src="https://img.shields.io/badge/Networking-LPM-0A66C2?style=for-the-badge&logo=cisco&logoColor=white" />
+### **Longest Prefix Match — Practical Network Routing Experiment**
 
-<img src="https://img.shields.io/badge/Cyber%20Security-Network%20Analysis-6A1B9A?style=for-the-badge&logo=hackthebox&logoColor=white" />
+**A hands-on demonstration of how routers select the most specific route when multiple IP prefixes match a destination.**
 
-<img src="https://img.shields.io/badge/Virtual%20Lab-GNS3-FF6B35?style=for-the-badge&logo=gnubash&logoColor=white" />
+<br>
 
-<img src="https://img.shields.io/badge/Packet%20Analysis-Wireshark-1679A7?style=for-the-badge&logo=wireshark&logoColor=white" />
+![Networking](https://img.shields.io/badge/Networking-LPM-2563EB?style=for-the-badge)
+![Cisco](https://img.shields.io/badge/Cisco-IOS-1E40AF?style=for-the-badge)
+![Wireshark](https://img.shields.io/badge/Wireshark-Packet%20Analysis-1677FF?style=for-the-badge)
+![Academic](https://img.shields.io/badge/Academic-Project-7C3AED?style=for-the-badge)
 
-<img src="https://img.shields.io/badge/Academic%20Year-2026--27-111827?style=for-the-badge" />
+<br>
 
-</p>
+**Department of Cyber Security & Information Security**
+**G M University — Academic Year 2026–27**
 
-<p align="center">
-  <strong>🔬 A practical demonstration and analysis of Longest Prefix Match (LPM) in IP routing.</strong>
-</p>
-
-<p align="center">
-  Understanding how routers select the most specific route when multiple overlapping prefixes exist.
-</p>
+</div>
 
 ---
 
-## 📌 Project Overview
+## 🧠 About the Project
 
-**Longest Prefix Match (LPM)** is one of the fundamental mechanisms used by IP routers to determine the best route for forwarding packets.
+**Longest Prefix Match (LPM)** is a fundamental concept in IP routing.
 
-When multiple routes match the destination IP address, the router selects the route with the **longest — most specific — network prefix**.
+When multiple routes match a destination IP address, a router selects the route with the **longest matching network prefix**, because it represents the most specific route.
 
-This project provides a practical network demonstration of that principle by configuring overlapping routes with different prefix lengths and observing the routing decision through controlled network traffic.
+This project provides a practical demonstration of LPM using a controlled virtual networking environment, overlapping network prefixes, routing configurations, and packet-level analysis.
 
-The demonstration focuses on prefixes such as:
+### Prefixes Demonstrated
 
 ```text
-/12
-/16
-/24
-/25
+/12  →  Broad Network
+/16  →  More Specific
+/24  →  Highly Specific
+/25  →  Most Specific
 ```
 
-The experiment verifies that the **most specific matching prefix wins**, regardless of where the route appears in the routing table.
+> **Core Principle:** The most specific matching route wins.
 
 ---
 
-# 🎯 Objectives
+## 🎯 Objectives
 
-The primary objectives of this project are:
-
-* 🧠 Understand the concept of Longest Prefix Match
-* 🌐 Analyze how routers select routes
+* 🧠 Understand the concept of **Longest Prefix Match**
+* 🌐 Study how routers select forwarding routes
 * 🔀 Configure overlapping IP networks
+* ⚙️ Configure router interfaces and routing entries
 * 📡 Generate controlled network traffic
+* 🦈 Capture and analyze packets using Wireshark
 * 🔎 Observe routing decisions
-* 📊 Verify routing behavior experimentally
-* 🛡️ Understand the importance of LPM in modern networks
-* 🧪 Analyze packets using network monitoring tools
+* 📊 Experimentally verify LPM behavior
 
 ---
 
-# 🧩 Core Concept
+## 🔥 Core LPM Demonstration
 
 Consider the following routing entries:
 
@@ -73,21 +69,19 @@ Destination        Prefix
 10.0.1.128         /25
 ```
 
-Suppose a packet is destined for:
+For a destination such as:
 
 ```text
 10.0.1.150
 ```
 
-Multiple routes may match the destination.
-
-The router evaluates the prefix lengths:
+multiple routes can match the destination.
 
 ```text
-/12  ───────► Match
-/16  ───────► Match
-/24  ───────► Match
-/25  ───────► Match ✓
+/12  ──► MATCH
+/16  ──► MATCH
+/24  ──► MATCH
+/25  ──► MATCH ✓
 ```
 
 The router selects:
@@ -96,103 +90,79 @@ The router selects:
 10.0.1.128/25
 ```
 
-because `/25` is the **longest matching prefix**.
+because **/25 has the longest matching prefix**.
 
-### In simple terms:
-
-> **The more specific route wins.**
-
----
-
-# 🧠 How LPM Works
+### In simple terms
 
 ```text
-                 Destination IP
-                       │
-                       ▼
-              ┌─────────────────┐
-              │ Routing Table   │
-              └────────┬────────┘
-                       │
-                       ▼
-             Find Matching Routes
-                       │
-          ┌────────────┼────────────┐
-          ▼            ▼            ▼
-        /12           /16          /24
-                                      │
-                                      ▼
-                                    /25
-                                      │
-                                      ▼
-                         Most Specific Match
-                                      │
-                                      ▼
-                              Select Next Hop
-                                      │
-                                      ▼
-                             Forward Packet
+More specific route
+        ↓
+Longer prefix
+        ↓
+Better match
+        ↓
+Selected by router
 ```
 
 ---
 
-# 🏗️ Network Architecture
-
-The project uses a controlled virtual networking environment to demonstrate routing behavior.
-
-### Experimental Flow
+## 🏗️ Network Architecture
 
 ```text
-┌─────────────┐
-│   Source    │
-│    Host     │
-└──────┬──────┘
-       │
-       │ Test Traffic
-       ▼
-┌─────────────────┐
-│  Virtual Router │
-│                 │
-│  Routing Table  │
-│                 │
-│ /12             │
-│ /16             │
-│ /24             │
-│ /25             │
-└────────┬────────┘
-         │
-         │ LPM Decision
-         ▼
-┌─────────────────┐
-│ Destination     │
-│ Network / Host  │
-└─────────────────┘
+                         ┌─────────────────────┐
+                         │      Source Host    │
+                         └──────────┬──────────┘
+                                    │
+                              Test Traffic
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │   Virtual Router    │
+                         │                     │
+                         │   Routing Table     │
+                         │                     │
+                         │   10.0.0.0/12       │
+                         │   10.0.0.0/16       │
+                         │   10.0.1.0/24       │
+                         │   10.0.1.128/25     │
+                         └──────────┬──────────┘
+                                    │
+                              LPM Decision
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │ Destination Network │
+                         │       / Host        │
+                         └─────────────────────┘
 ```
 
 ---
 
-# 🔬 Experimental Methodology
-
-The experiment follows a structured process:
+## ⚙️ Experimental Workflow
 
 ```text
-01  →  Design Network Topology
-02  →  Configure Router Interfaces
-03  →  Configure Overlapping Routes
-04  →  Generate Test Traffic
-05  →  Capture Packets
-06  →  Observe Routing Decisions
-07  →  Compare Prefix Matches
-08  →  Verify Longest Prefix Selection
+01  Design Network Topology
+        ↓
+02  Configure Router Interfaces
+        ↓
+03  Configure Overlapping Routes
+        ↓
+04  Generate Test Traffic
+        ↓
+05  Capture Network Packets
+        ↓
+06  Observe Routing Decisions
+        ↓
+07  Compare Matching Prefixes
+        ↓
+08  Verify Longest Prefix Selection
 ```
 
 ---
 
-# ⚙️ Router Configuration
+## 🖥️ Router Configuration
 
-The demonstration uses multiple router interfaces to establish the test environment.
-
-Example interface configuration:
+Example interface configuration used for the demonstration:
 
 ```text
 GigabitEthernet0/0
@@ -216,30 +186,40 @@ These interfaces provide the connectivity required for the routing experiment.
 
 ---
 
-# 🧪 Test Scenario
+## 🧪 Test Scenario
 
-The experiment introduces multiple overlapping routes.
+The experiment introduces multiple overlapping routes:
 
 ```text
-┌─────────────────────────────────────────┐
-│             Routing Table               │
-├─────────────────────────────────────────┤
-│ Route A        →        /12             │
-│ Route B        →        /16             │
-│ Route C        →        /24             │
-│ Route D        →        /25             │
-└─────────────────────────────────────────┘
+┌─────────────────────────────────────┐
+│          ROUTING TABLE              │
+├─────────────────────────────────────┤
+│ Route A  →  /12                    │
+│ Route B  →  /16                    │
+│ Route C  →  /24                    │
+│ Route D  →  /25                    │
+└─────────────────────────────────────┘
 ```
 
-A destination IP that falls within multiple networks is then selected for testing.
+A destination IP belonging to multiple networks is selected for testing.
 
-The router compares the matching prefixes and chooses the route with the greatest prefix length.
+The router then:
+
+```text
+Find matching routes
+        ↓
+Compare prefix lengths
+        ↓
+Identify longest prefix
+        ↓
+Select next hop
+        ↓
+Forward packet
+```
 
 ---
 
-# 📡 Traffic Generation
-
-The network behavior can be tested using tools such as:
+## 📡 Traffic Testing
 
 ### Ping
 
@@ -251,11 +231,13 @@ Used to verify basic IP connectivity.
 
 ### Traceroute
 
+**Windows**
+
 ```bash
 tracert <destination-ip>
 ```
 
-or:
+**Linux**
 
 ```bash
 traceroute <destination-ip>
@@ -269,247 +251,141 @@ Used to observe the path taken by packets.
 iperf3
 ```
 
-Used for controlled traffic generation and network performance testing.
+Used for controlled network traffic generation and performance testing.
 
 ---
 
-# 🦈 Packet Analysis
+## 🦈 Packet Analysis with Wireshark
 
-**Wireshark** is used to capture and inspect packets during the experiment.
+Wireshark is used to capture and inspect packets during the experiment.
 
-The packet capture helps correlate:
+The packet-level flow can be represented as:
 
 ```text
 Generated Traffic
        ↓
 Router Processing
        ↓
-Routing Decision
+Routing Table Lookup
+       ↓
+LPM Decision
        ↓
 Selected Route
        ↓
 Forwarded Packet
 ```
 
-This provides a packet-level perspective of the routing experiment.
+This helps connect the **routing-table decision** with the actual network traffic observed during the experiment.
 
 ---
 
-# 📊 Results
+## 📊 Experimental Result
 
-The experiment demonstrates the fundamental behavior of Longest Prefix Match:
+| Prefix | Specificity |   Result   |
+| :----: | :---------: | :--------: |
+|  `/12` |     Low     |      ❌     |
+|  `/16` |    Medium   |      ❌     |
+|  `/24` |     High    |      ❌     |
+|  `/25` |   Highest   | ✅ Selected |
 
-| Prefix | Specificity | Selection |
-| :----: | :---------: | :-------: |
-|  `/12` |     Low     |     ❌     |
-|  `/16` |    Medium   |     ❌     |
-|  `/24` |     High    |     ❌     |
-|  `/25` |   Highest   |     ✅     |
+### ✅ Observation
 
-### Key Observation
-
-When multiple routes match a destination address:
+The experiment verifies that when multiple routes match a destination IP, the router selects the route with the **longest matching prefix**.
 
 ```text
-Longest Prefix
-      ↓
-Most Specific Network
-      ↓
-Best Matching Route
-      ↓
-Packet Forwarded
+/12 < /16 < /24 < /25
+
+Specificity increases ───────────────►
 ```
 
-Therefore:
+---
 
-> **LPM ensures that the most specific applicable route is selected.**
+## 🛠️ Tools & Technologies
+
+| Tool                | Purpose                        |
+| ------------------- | ------------------------------ |
+| 🖥️ VirtualBox      | Virtual networking environment |
+| 🌐 Cisco IOS        | Router configuration           |
+| 🦈 Wireshark        | Packet capture & analysis      |
+| 📡 iPerf3           | Network traffic generation     |
+| 💻 Networking Tools | Connectivity & route testing   |
 
 ---
 
-# 🧠 Why LPM Matters
-
-Longest Prefix Match is fundamental to modern IP routing.
-
-It allows networks to maintain overlapping address spaces while still making deterministic forwarding decisions.
-
-LPM is especially important for:
-
-* 🌐 Internet routing
-* 🏢 Enterprise networks
-* ☁️ Cloud networking
-* 🔀 Routers and Layer-3 switches
-* 🛡️ Network security
-* 📡 ISP infrastructure
-* 🚀 Software-defined networking
-* 🧭 Routing table lookup systems
-
----
-
-# 🛠️ Technologies & Tools
-
-| Technology         | Purpose                              |
-| ------------------ | ------------------------------------ |
-| 🖥️ **VirtualBox** | Virtualized networking environment   |
-| 🌐 **GNS3**        | Network topology & router simulation |
-| 🦈 **Wireshark**   | Packet capture and analysis          |
-| 📡 **Ping**        | Connectivity testing                 |
-| 🧭 **Traceroute**  | Route/path analysis                  |
-| ⚡ **iPerf3**       | Controlled traffic generation        |
-| 🔀 **Cisco IOS**   | Router configuration & routing       |
-
----
-
-# 📁 Repository Contents
+## 📁 Repository Structure
 
 ```text
 LPM-Network-Demonstration/
 │
 ├── 📄 LPM_Report.pdf
-│
-├── 📄 LPM_Report_TC.docx
-│
+├── 📄 LPM_Report TC.docx
 └── 📄 README.md
 ```
 
-The repository contains both:
-
-* 📕 **PDF version** — final report/reference
-* 📝 **DOCX version** — editable report
-
-The GitHub repository currently provides these report files as its primary project artifacts.
-
 ---
 
-# 📚 Report Structure
-
-The accompanying technical competency report covers:
+## 📚 Key Concepts Covered
 
 ```text
-Abstract
-   ↓
-Introduction
-   ↓
-Objectives
-   ↓
-Methodology
-   ↓
-System Design
-   ↓
-Network Topology
-   ↓
-Configuration
-   ↓
-Implementation
-   ↓
-Results
-   ↓
-Conclusion
-   ↓
-Future Scope
-   ↓
-References
+IP Routing
+     │
+     ├── Routing Tables
+     ├── Network Prefixes
+     ├── Subnetting
+     ├── CIDR
+     ├── Longest Prefix Match
+     ├── Next-Hop Selection
+     ├── Packet Forwarding
+     └── Packet Analysis
 ```
 
 ---
 
-# 🔮 Future Scope
+## 🎓 Learning Outcomes
 
-The demonstration can be extended in several directions.
+Through this experiment, the following concepts were practically explored:
 
-### 🚀 Possible Improvements
-
-* IPv6 Longest Prefix Match
-* Large-scale routing table experiments
-* Routing performance benchmarking
-* Trie-based routing lookup
-* TCAM-based lookup analysis
-* Dynamic routing protocols
-* OSPF and BGP integration
-* SDN-based LPM experiments
-* Automated packet analysis
-* Network automation using Python
-* Real hardware router testing
+* How routers process destination IP addresses
+* How overlapping network prefixes are handled
+* Why longer prefixes represent more specific routes
+* How routing decisions affect packet forwarding
+* How network traffic can be observed using packet-analysis tools
+* How theoretical routing concepts can be validated experimentally
 
 ---
 
-# 🎓 Academic Context
+## 📑 Project Documentation
 
-**Department:** Cyber Security & Information Security
-**Academic Year:** 2026–27
-**Project Type:** Technical Competency / Network Demonstration
-**Topic:** Longest Prefix Match (LPM)
+The complete technical documentation is available in the repository:
 
-This repository serves as the supporting documentation and report archive for the LPM networking demonstration. GitHub identifies the project specifically as a Technical Competency Report covering integration, technology, topology, configuration, implementation, results, and future scope.
+* 📄 **[LPM Report — PDF](./LPM_Report%20.pdf)**
+* 📝 **[LPM Report — DOCX](./LPM_Report%20TC.docx)**
 
 ---
 
-# 💡 Key Takeaways
+## 👨‍💻 Author
 
-```text
-┌─────────────────────────────────────┐
-│          LONGEST PREFIX MATCH       │
-├─────────────────────────────────────┤
-│                                     │
-│ Multiple routes can match           │
-│              ↓                      │
-│ Compare prefix lengths              │
-│              ↓                      │
-│ Select longest prefix               │
-│              ↓                      │
-│ Choose most specific route          │
-│              ↓                      │
-│ Forward packet                      │
-│                                     │
-└─────────────────────────────────────┘
-```
+<div align="center">
 
-### The core rule:
+### **Atharva Kulkarni**
 
-# `/25 > /24 > /16 > /12`
-
-The route with the **longest matching prefix** takes precedence.
-
----
-
-# 👨‍💻 Author
-
-<p align="center">
-
-<strong>ATHARVA KULKARNI</strong>
+**B.Tech — Computer Science & Engineering with Information Security**
+G M University, Davangere
 
 <br>
 
-Computer Science • Cyber Security • AI/ML • Networking
+[![GitHub](https://img.shields.io/badge/GitHub-Atharva--ark06-181717?style=for-the-badge\&logo=github)](https://github.com/Atharva-ark06)
 
-<br><br>
-
-<a href="https://github.com/Atharva-ark06">
-<img src="https://img.shields.io/badge/GitHub-Atharva--ark06-181717?style=for-the-badge&logo=github" />
-</a>
-
-</p>
+</div>
 
 ---
 
-# ⭐ Support
+<div align="center">
 
-If you found this project useful for understanding networking and routing:
+### 🌐 **Learn → Configure → Capture → Analyze**
 
-⭐ **Star the repository**
-🍴 **Fork the project**
-📚 **Use it for learning**
-💡 **Build upon the experiment**
+**A practical exploration of how routers make routing decisions using Longest Prefix Match.**
 
----
+⭐ If you found this project useful, consider starring the repository.
 
-<p align="center">
-
-### 🌐 Understand the Route. Find the Match. Forward the Packet.
-
-<strong>Longest Prefix Match — Network Demonstration</strong>
-
-<br><br>
-
-<sub>Built as a practical exploration of IP routing and network behavior.</sub>
-
-</p>
+</div>
