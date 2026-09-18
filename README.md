@@ -153,7 +153,11 @@ G M University, Davangere
 [![GitHub](https://img.shields.io/badge/GitHub-Atharva--ark06-181717?style=flat-square\&logo=github)](https://github.com/Atharva-ark06)
 
 ---
+## Clone project 
+```
+git clone https://github.com/Atharva-ark06/LPM-Network-Demonstration.git
 
+```
 <div align="center">
 
 ### 🌐 **Configure • Capture • Analyze • Understand**
