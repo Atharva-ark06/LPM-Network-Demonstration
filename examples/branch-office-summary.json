@@ -1,0 +1,20 @@
+[
+  {
+    "network": "10.44.0.0/16",
+    "next_hop": "192.0.2.1",
+    "interface": "BRANCH-SUMMARY",
+    "metric": 10
+  },
+  {
+    "network": "10.44.20.0/24",
+    "next_hop": "192.0.2.2",
+    "interface": "BRANCH-20",
+    "metric": 30
+  },
+  {
+    "network": "0.0.0.0/0",
+    "next_hop": "192.0.2.254",
+    "interface": "WAN",
+    "metric": 100
+  }
+]
