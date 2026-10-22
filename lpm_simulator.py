@@ -15,6 +15,9 @@ class RouteFileError(ValueError):
     """Raised when a route file is invalid."""
 
 
+ROUTE_FIELDS = {"network", "next_hop", "interface", "metric"}
+
+
 def load_routes(path: str | Path) -> list[dict[str, Any]]:
     """Load and validate routes from a JSON file."""
     try:
@@ -31,20 +34,36 @@ def load_routes(path: str | Path) -> list[dict[str, Any]]:
     for index, item in enumerate(raw, start=1):
         if not isinstance(item, dict) or "network" not in item:
             raise RouteFileError(f"route #{index} must be an object with a network field")
+        unknown_fields = set(item) - ROUTE_FIELDS
+        if unknown_fields:
+            names = ", ".join(sorted(str(field) for field in unknown_fields))
+            raise RouteFileError(f"route #{index} has unsupported field(s): {names}")
+
+        if not isinstance(item["network"], str):
+            raise RouteFileError(f"route #{index} network must be a CIDR string")
         try:
             network = ipaddress.ip_network(item["network"], strict=False)
-        except (ValueError, TypeError) as exc:
+        except ValueError as exc:
             raise RouteFileError(f"route #{index} has an invalid network") from exc
         if not isinstance(network, ipaddress.IPv4Network):
             raise RouteFileError(f"route #{index} must use IPv4")
+
         metric = item.get("metric", 0)
         if isinstance(metric, bool) or not isinstance(metric, int) or metric < 0:
             raise RouteFileError(f"route #{index} metric must be a non-negative integer")
+
+        next_hop = item.get("next_hop", "directly-connected")
+        interface = item.get("interface", "unspecified")
+        if not isinstance(next_hop, str) or not next_hop.strip():
+            raise RouteFileError(f"route #{index} next_hop must be a non-empty string")
+        if not isinstance(interface, str) or not interface.strip():
+            raise RouteFileError(f"route #{index} interface must be a non-empty string")
+
         routes.append({
             **item,
             "network": network,
-            "next_hop": str(item.get("next_hop", "directly-connected")),
-            "interface": str(item.get("interface", "unspecified")),
+            "next_hop": next_hop,
+            "interface": interface,
             "metric": metric,
         })
     return routes
