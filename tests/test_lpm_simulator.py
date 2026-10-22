@@ -76,6 +76,50 @@ class LongestPrefixMatchTests(unittest.TestCase):
             with self.assertRaises(RouteFileError):
                 load_routes(path)
 
+    def test_route_loader_rejects_boolean_metric(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "routes.json"
+            path.write_text(json.dumps([{"network": "10.0.0.0/8", "metric": True}]), encoding="utf-8")
+            with self.assertRaises(RouteFileError):
+                load_routes(path)
+
+    def test_route_loader_rejects_non_string_network(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "routes.json"
+            path.write_text(json.dumps([{"network": 123}]), encoding="utf-8")
+            with self.assertRaises(RouteFileError):
+                load_routes(path)
+
+    def test_route_loader_rejects_unknown_fields(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "routes.json"
+            path.write_text(
+                json.dumps([{"network": "10.0.0.0/8", "admin_distance": 1}]),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(RouteFileError, "unsupported field"):
+                load_routes(path)
+
+    def test_route_loader_rejects_non_string_next_hop(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "routes.json"
+            path.write_text(
+                json.dumps([{"network": "10.0.0.0/8", "next_hop": 123}]),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(RouteFileError, "next_hop"):
+                load_routes(path)
+
+    def test_route_loader_rejects_blank_interface(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "routes.json"
+            path.write_text(
+                json.dumps([{"network": "10.0.0.0/8", "interface": "  "}]),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(RouteFileError, "interface"):
+                load_routes(path)
+
 
 if __name__ == "__main__":
     unittest.main()
