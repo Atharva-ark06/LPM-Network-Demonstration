@@ -1,0 +1,20 @@
+[
+  {
+    "network": "192.0.2.0/24",
+    "next_hop": "192.0.2.1",
+    "interface": "DOC-NET-A",
+    "metric": 10
+  },
+  {
+    "network": "198.51.100.0/24",
+    "next_hop": "192.0.2.2",
+    "interface": "DOC-NET-B",
+    "metric": 5
+  },
+  {
+    "network": "203.0.113.0/24",
+    "next_hop": "192.0.2.3",
+    "interface": "DOC-NET-C",
+    "metric": 1
+  }
+]
