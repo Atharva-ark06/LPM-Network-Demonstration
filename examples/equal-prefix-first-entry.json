@@ -1,0 +1,20 @@
+[
+  {
+    "network": "198.51.100.0/24",
+    "next_hop": "192.0.2.11",
+    "interface": "PATH-A",
+    "metric": 5
+  },
+  {
+    "network": "198.51.100.0/24",
+    "next_hop": "192.0.2.12",
+    "interface": "PATH-B",
+    "metric": 5
+  },
+  {
+    "network": "0.0.0.0/0",
+    "next_hop": "192.0.2.254",
+    "interface": "DEFAULT",
+    "metric": 100
+  }
+]
