@@ -88,11 +88,12 @@ The Python simulator models route selection only. It does not configure a router
 | Understand the project and its design | [Project overview](docs/project-overview.md) · [Architecture](docs/architecture.md) |
 | Learn the algorithm and code | [LPM fundamentals](docs/lpm-fundamentals.md) · [Implementation walkthrough](docs/implementation-walkthrough.md) |
 | Install and run the project | [Setup guide](docs/setup-guide.md) · [Route-file format](docs/route-file-format.md) |
+| Understand acceptance checks | [Validation requirements](docs/validation-requirements.md) · [Validation and evidence](docs/validation-and-evidence.md) |
 | Follow a practical networking lab | [Lab guide](docs/lab-guide.md) · [Wireshark filters](docs/wireshark-filters.md) |
 | Explore scenarios and applications | [Use cases](docs/use-cases.md) · [Network design examples](docs/network-design-examples.md) |
-| Understand the security relevance | [Security relevance](docs/security-relevance.md) · [Threat-model exercise](docs/threat-model.md) |
+| Understand the security relevance | [Security relevance and limitations](docs/security-relevance.md) · [Threat-model exercise](docs/threat-model.md) |
 | Review routes defensively | [Route review checklist](security/route-review-checklist.md) · [Incident-response exercise](security/incident-response-exercise.md) |
-| Prepare evidence or a report | [Validation guide](docs/validation-and-evidence.md) · [Lab report template](docs/lab-report-template.md) |
+| Prepare evidence or a report | [Lab report template](docs/lab-report-template.md) |
 | Troubleshoot or explore further | [Troubleshooting](docs/troubleshooting.md) · [FAQ](docs/faq.md) · [References](docs/references.md) |
 
 Additional learning material is available in the [glossary](docs/glossary.md), [learning roadmap](docs/learning-roadmap.md), [workflow guide](docs/workflow.md), and [sample results](docs/sample-results.md).
@@ -106,7 +107,7 @@ LPM knowledge helps network defenders reason about:
 - **Incident response:** route tables, interface state, captures, and change records help investigate reachability issues.
 - **Change control:** expected routes, validation steps, and rollback plans make changes easier to review.
 
-This repository is **not** a security scanner or production routing engine. It does not detect route hijacking, audit firewall policy, query real devices, or establish that a network is secure. Use router commands only in a lab or environment where you have explicit authorization.
+This repository is an educational simulator, **not** a security scanner or production routing engine. It does not detect route hijacking, audit firewall policy, query real devices, or establish that a network is secure. Read the [security claims and limitations](docs/security-relevance.md) before interpreting results. Use router commands only in a lab or environment where you have explicit authorization.
 
 ## Original academic reports
 
@@ -122,7 +123,7 @@ This repository is **not** a security scanner or production routing engine. It d
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Add or update tests when changing behavior, run the suite locally, and clearly distinguish simulated examples from observations collected in an authorized lab.
+See [CONTRIBUTING.md](CONTRIBUTING.md). Add or update tests when changing behavior, run the suite locally, and clearly distinguish simulated examples from observations collected in an authorized lab. Use the [validation requirements](docs/validation-requirements.md) as the review checklist.
 
 ## Author
 
