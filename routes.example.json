@@ -1,0 +1,32 @@
+[
+  {
+    "network": "10.0.0.0/12",
+    "next_hop": "192.0.2.1",
+    "interface": "GigabitEthernet0/0",
+    "metric": 20
+  },
+  {
+    "network": "10.0.0.0/16",
+    "next_hop": "192.0.2.2",
+    "interface": "GigabitEthernet0/1",
+    "metric": 10
+  },
+  {
+    "network": "10.0.1.0/24",
+    "next_hop": "192.0.2.3",
+    "interface": "GigabitEthernet0/2",
+    "metric": 5
+  },
+  {
+    "network": "10.0.1.128/25",
+    "next_hop": "192.0.2.4",
+    "interface": "GigabitEthernet0/3",
+    "metric": 1
+  },
+  {
+    "network": "0.0.0.0/0",
+    "next_hop": "192.0.2.254",
+    "interface": "GigabitEthernet0/7",
+    "metric": 100
+  }
+]
