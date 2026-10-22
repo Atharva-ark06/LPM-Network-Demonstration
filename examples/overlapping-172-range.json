@@ -1,0 +1,20 @@
+[
+  {
+    "network": "172.16.0.0/12",
+    "next_hop": "192.0.2.1",
+    "interface": "SUMMARY-12",
+    "metric": 0
+  },
+  {
+    "network": "172.20.0.0/16",
+    "next_hop": "192.0.2.2",
+    "interface": "REGION-16",
+    "metric": 10
+  },
+  {
+    "network": "172.20.1.0/24",
+    "next_hop": "192.0.2.3",
+    "interface": "SUBNET-24",
+    "metric": 100
+  }
+]

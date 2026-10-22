@@ -1,0 +1,26 @@
+[
+  {
+    "network": "10.0.0.0/8",
+    "next_hop": "192.0.2.1",
+    "interface": "LEVEL-8",
+    "metric": 10
+  },
+  {
+    "network": "10.1.0.0/16",
+    "next_hop": "192.0.2.2",
+    "interface": "LEVEL-16",
+    "metric": 20
+  },
+  {
+    "network": "10.1.2.0/24",
+    "next_hop": "192.0.2.3",
+    "interface": "LEVEL-24",
+    "metric": 30
+  },
+  {
+    "network": "10.1.2.3/32",
+    "next_hop": "192.0.2.4",
+    "interface": "HOST",
+    "metric": 40
+  }
+]

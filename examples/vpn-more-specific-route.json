@@ -1,0 +1,20 @@
+[
+  {
+    "network": "10.0.0.0/8",
+    "next_hop": "192.0.2.1",
+    "interface": "CORP",
+    "metric": 10
+  },
+  {
+    "network": "10.8.0.0/16",
+    "next_hop": "192.0.2.2",
+    "interface": "VPN-REGION",
+    "metric": 20
+  },
+  {
+    "network": "10.8.4.0/24",
+    "next_hop": "192.0.2.3",
+    "interface": "VPN-SUBNET",
+    "metric": 30
+  }
+]

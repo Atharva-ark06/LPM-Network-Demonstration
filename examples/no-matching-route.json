@@ -1,0 +1,14 @@
+[
+  {
+    "network": "10.0.0.0/8",
+    "next_hop": "192.0.2.1",
+    "interface": "CORPORATE",
+    "metric": 10
+  },
+  {
+    "network": "172.16.0.0/12",
+    "next_hop": "192.0.2.2",
+    "interface": "PRIVATE",
+    "metric": 20
+  }
+]
