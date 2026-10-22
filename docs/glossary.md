@@ -1,0 +1,22 @@
+# Glossary
+
+- **CIDR:** Classless Inter-Domain Routing; notation such as `10.0.1.0/24` expresses a network prefix.
+- **Destination address:** The IP address a packet is trying to reach.
+- **Default route:** IPv4 `0.0.0.0/0`, a catch-all route used when no more-specific matching route is selected.
+- **Forwarding table:** Entries a device consults to decide how to forward packets.
+- **Interface:** A logical or physical connection used to send or receive traffic.
+- **Longest Prefix Match (LPM):** Selecting the matching network prefix with the greatest prefix length.
+- **Metric:** A value used by a routing system to compare routes under its selection rules. In this simulator, it only breaks ties between equal-length matching prefixes.
+- **Next hop:** The next router or destination used to continue forwarding. This simulator treats the next-hop value as a label and does not test reachability.
+- **Prefix length:** Number of leading network bits in a CIDR prefix, from `/0` to `/32` for IPv4.
+- **Route:** A mapping from a destination network to forwarding metadata.
+- **Routing table:** The set of routes available to a routing device.
+- **Static route:** A route configured manually rather than learned through a routing protocol.
+- **Subnet mask:** An IPv4 mask corresponding to a prefix length, such as `255.255.255.0` for `/24`.
+- **Wireshark display filter:** A filter that controls which captured packets are shown; it does not change the capture itself.
+- **Asymmetric routing:** Forward and return traffic take different paths.
+- **ECMP:** Equal-Cost Multi-Path; a router can use multiple paths with equal cost when supported and configured.
+- **ACL:** Access Control List, a rule set that permits or denies traffic based on configured criteria.
+- **IDS/IPS:** Intrusion Detection System / Intrusion Prevention System.
+- **Control plane:** Processes that determine routes and manage network behavior.
+- **Data plane:** Mechanisms that forward packets using installed forwarding information.

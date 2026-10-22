@@ -1,0 +1,20 @@
+[
+  {
+    "network": "198.51.100.0/24",
+    "next_hop": "192.0.2.11",
+    "interface": "LAB-PATH-A",
+    "metric": 30
+  },
+  {
+    "network": "198.51.100.0/24",
+    "next_hop": "192.0.2.12",
+    "interface": "LAB-PATH-B",
+    "metric": 5
+  },
+  {
+    "network": "198.51.0.0/16",
+    "next_hop": "192.0.2.13",
+    "interface": "LAB-SUMMARY",
+    "metric": 1
+  }
+]

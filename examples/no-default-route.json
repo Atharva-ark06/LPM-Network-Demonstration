@@ -1,0 +1,14 @@
+[
+  {
+    "network": "10.0.0.0/16",
+    "next_hop": "192.0.2.10",
+    "interface": "LAB-A",
+    "metric": 10
+  },
+  {
+    "network": "192.168.10.0/24",
+    "next_hop": "192.0.2.20",
+    "interface": "LAB-B",
+    "metric": 10
+  }
+]
