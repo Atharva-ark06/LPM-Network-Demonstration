@@ -1,0 +1,14 @@
+[
+  {
+    "network": "192.0.2.0/24",
+    "next_hop": "192.0.2.10",
+    "interface": "LOW-METRIC",
+    "metric": 0
+  },
+  {
+    "network": "192.0.2.0/24",
+    "next_hop": "192.0.2.20",
+    "interface": "HIGH-METRIC",
+    "metric": 10
+  }
+]
