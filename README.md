@@ -107,3 +107,40 @@ G M University, Davangere
 ---
 
 **Configure • Compare • Capture • Analyze**
+
+
+## Extended project documentation
+
+The links below expand on the project's purpose, implementation, setup, workflows, and security context.
+
+### Project and implementation
+- [Project overview and objectives](docs/project-overview.md)
+- [Architecture and data flow](docs/architecture.md)
+- [Implementation walkthrough](docs/implementation-walkthrough.md)
+- [Learning roadmap](docs/learning-roadmap.md)
+- [Glossary](docs/glossary.md)
+- [FAQ](docs/faq.md)
+- [Further reading and references](docs/references.md)
+
+### Setup, workflow, and evidence
+- [Cross-platform setup guide](docs/setup-guide.md)
+- [End-to-end workflow](docs/workflow.md)
+- [Validation and evidence guide](docs/validation-and-evidence.md)
+- [Lab report template](docs/lab-report-template.md)
+- [Use cases](docs/use-cases.md)
+- [Network design examples](docs/network-design-examples.md)
+
+### Security learning folder
+- [Security resources overview](security/README.md)
+- [Security relevance of LPM](docs/security-relevance.md)
+- [Routing threat-model exercise](docs/threat-model.md)
+- [Defensive route review checklist](security/route-review-checklist.md)
+- [Incident-response tabletop exercise](security/incident-response-exercise.md)
+- [Routing change and rollback template](security/routing-change-plan-template.md)
+
+### Additional route-table examples
+- [No default route](examples/no-default-route.json)
+- [Equal-prefix metric tie-break](examples/equal-prefix-metrics.json)
+- [Campus segmentation scenario](examples/campus-segmentation.json)
+
+These materials explain routing and security concepts; they do not imply that a real router was configured or a packet capture was collected. Keep simulated examples separate from observations made in your own authorized lab.
