@@ -75,7 +75,7 @@ class ExampleRouteTableTests(unittest.TestCase):
     def test_each_expanded_scenario_has_a_lab_guide(self):
         for filename in SCENARIO_EXPECTATIONS:
             with self.subTest(route_file=filename):
-                lab_path = ROOT / "docs" / "labs" / filename.removesuffix(".json") + ".md"
+                lab_path = ROOT / "docs" / "labs" / (filename.removesuffix(".json") + ".md")
                 self.assertTrue(lab_path.exists(), f"Missing lab guide for {filename}")
 
 
