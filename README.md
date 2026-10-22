@@ -1,20 +1,16 @@
-# 🌐 LPM Network Demonstration
+# LPM Network Demonstration
 
-**An educational lab for understanding IPv4 Longest Prefix Match (LPM), routing-table decisions, and packet observation.**
+[![LPM simulator tests](https://github.com/Atharva-ark06/LPM-Network-Demonstration/actions/workflows/python-tests.yml/badge.svg?branch=master)](https://github.com/Atharva-ark06/LPM-Network-Demonstration/actions/workflows/python-tests.yml)
+![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)
+![Focus](https://img.shields.io/badge/focus-networking%20%26%20security-5b6ee1)
 
-This repository pairs the original project report with a small Python simulator, automated tests, and practical lab notes. It is designed for networking and information-security students learning how a router chooses the most specific matching route.
+An educational IPv4 **Longest Prefix Match (LPM)** lab that combines a runnable Python simulator, example routing tables, automated tests, and networking/security learning guides.
 
-## What is included
+The project demonstrates how a destination can match multiple routes—and why the route with the **longest matching prefix** is selected. It also explores how routing decisions relate to network segmentation, firewall visibility, troubleshooting, and incident response.
 
-- **IPv4 LPM simulator** — evaluate a destination against a JSON routing table.
-- **Example routes** — overlapping prefixes and a default route to make the selection visible.
-- **Unit tests** — cover prefix precedence, metrics, default/no-route behavior, and invalid input.
-- **Lab guides** — router inspection examples, Wireshark filters, troubleshooting, and core concepts.
-- **Original reports** — the submitted PDF report and editable document.
+## Get started
 
-## Quick start
-
-Requirements: **Python 3.10+**. The simulator uses only the Python standard library; no package installation is needed.
+**Requirements:** Python 3.10 or newer. No third-party packages are needed.
 
 ```bash
 git clone https://github.com/Atharva-ark06/LPM-Network-Demonstration.git
@@ -25,122 +21,114 @@ python lpm_simulator.py 10.0.1.20
 python lpm_simulator.py 203.0.113.9
 ```
 
-The example route table is `routes.example.json`. To use your own route table:
+On Windows, use `py` instead of `python` if that is how Python is installed. Full instructions are in the [setup guide](docs/setup-guide.md).
 
-```bash
-python lpm_simulator.py 10.0.1.200 --routes routes.example.json
-```
-
-Run the test suite:
+Run the automated tests:
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-## Example: why the longest prefix wins
+## How LPM works
 
-The example table includes these overlapping networks:
+When multiple routing-table entries match a destination, the entry with the greatest prefix length is the most specific match.
 
-| Route | Meaning |
+The included `routes.example.json` contains overlapping prefixes:
+
+| Route | Role |
 | --- | --- |
-| `10.0.0.0/12` | Broad match |
-| `10.0.0.0/16` | More specific match |
-| `10.0.1.0/24` | Still more specific |
-| `10.0.1.128/25` | Most specific match for the upper half of the /24 |
-| `0.0.0.0/0` | Default route if no more-specific route matches |
+| `10.0.0.0/12` | Broad network |
+| `10.0.0.0/16` | More specific network |
+| `10.0.1.0/24` | Subnet route |
+| `10.0.1.128/25` | Most specific route for the upper half of the /24 |
+| `0.0.0.0/0` | Default route |
 
-For destination `10.0.1.200`, the selected route is `10.0.1.128/25`. For `10.0.1.20`, the `/25` does not match, so `10.0.1.0/24` wins. For `203.0.113.9`, the example default route is selected.
+Try these lookups:
 
-The simulator chooses the greatest matching prefix length first. For equal prefix lengths, it chooses the lowest configured metric; equal metrics retain the first route in the file. This is an educational model, not a complete implementation of a router's route-selection policy.
+| Destination | Expected selection | Why |
+| --- | --- | --- |
+| `10.0.1.200` | `10.0.1.128/25` | Longest matching prefix |
+| `10.0.1.20` | `10.0.1.0/24` | The /25 does not contain this address |
+| `203.0.113.9` | `0.0.0.0/0` | Only the default route matches |
 
-## Lab workflow
+The simulator compares prefix length first, then uses the lowest metric for routes with equal prefix lengths. If both prefix length and metric are equal, the first matching route in the file wins. This deterministic rule is for teaching; real routers may apply additional route-selection rules or support equal-cost paths.
+
+## Project workflow
 
 ```text
-Inspect topology and routes
-          ↓
-Run a destination lookup
-          ↓
-Compare with router route-table output
-          ↓
-Generate test traffic in an isolated lab
-          ↓
-Capture and inspect packets in Wireshark
-          ↓
-Record evidence and conclusions
+Choose a destination and route table
+                ↓
+Run the LPM simulator
+                ↓
+Explain the selected prefix
+                ↓
+Optionally compare with an authorized router lookup
+                ↓
+Optionally inspect lab traffic in Wireshark
+                ↓
+Record evidence and run regression tests
 ```
 
-**Important:** a packet capture can show traffic on the observed interface, but it does not directly expose the router's internal LPM decision. Correlate capture evidence with the router's own routing-table lookup. Only mark the physical/virtual lab as completed after collecting actual outputs.
+The Python simulator models route selection only. It does not configure a router, forward packets, generate traffic, or prove that a packet traversed a particular device. A packet capture shows traffic visible at its observation point—not the router's internal LPM computation.
+
+## What's included
+
+- **`lpm_simulator.py`** — command-line IPv4 route-selection simulator.
+- **`routes.example.json` and `examples/`** — overlapping prefixes, no-default-route, equal-prefix metric, and campus-segmentation scenarios.
+- **`tests/`** — automated checks for route selection, invalid input, and example scenarios.
+- **GitHub Actions** — runs the test suite and command-line smoke checks.
+- **`docs/`** — project overview, architecture, implementation, setup, workflow, use cases, lab guides, troubleshooting, and learning resources.
+- **`security/`** — defensive route-review checklist, incident-response tabletop, and routing change/rollback template.
+- **Original academic reports** — PDF and editable DOCX files.
 
 ## Documentation
 
-- [LPM fundamentals and worked examples](docs/lpm-fundamentals.md)
-- [Step-by-step lab guide](docs/lab-guide.md)
-- [Wireshark filter reference](docs/wireshark-filters.md)
-- [Troubleshooting](docs/troubleshooting.md)
+| If you want to… | Start here |
+| --- | --- |
+| Understand the project and its design | [Project overview](docs/project-overview.md) · [Architecture](docs/architecture.md) |
+| Learn the algorithm and code | [LPM fundamentals](docs/lpm-fundamentals.md) · [Implementation walkthrough](docs/implementation-walkthrough.md) |
+| Install and run the project | [Setup guide](docs/setup-guide.md) · [Route-file format](docs/route-file-format.md) |
+| Follow a practical networking lab | [Lab guide](docs/lab-guide.md) · [Wireshark filters](docs/wireshark-filters.md) |
+| Explore scenarios and applications | [Use cases](docs/use-cases.md) · [Network design examples](docs/network-design-examples.md) |
+| Understand the security relevance | [Security relevance](docs/security-relevance.md) · [Threat-model exercise](docs/threat-model.md) |
+| Review routes defensively | [Route review checklist](security/route-review-checklist.md) · [Incident-response exercise](security/incident-response-exercise.md) |
+| Prepare evidence or a report | [Validation guide](docs/validation-and-evidence.md) · [Lab report template](docs/lab-report-template.md) |
+| Troubleshoot or explore further | [Troubleshooting](docs/troubleshooting.md) · [FAQ](docs/faq.md) · [References](docs/references.md) |
 
-## Original project reports
+Additional learning material is available in the [glossary](docs/glossary.md), [learning roadmap](docs/learning-roadmap.md), [workflow guide](docs/workflow.md), and [sample results](docs/sample-results.md).
 
-- [Open the PDF report](./LPM_Report%20.pdf)
-- [Open the editable report (DOCX)](./LPM_Report%20TC.docx)
+## Security relevance
 
-## Tools and concepts
+LPM knowledge helps network defenders reason about:
 
-**Concepts:** IPv4 routing, CIDR, subnetting, routing tables, prefix matching, packet forwarding, traffic inspection.
+- **Segmentation:** which route may carry traffic toward a subnet; firewalls and ACLs separately enforce access policy.
+- **Inspection visibility:** route changes can affect whether traffic passes through expected monitoring points.
+- **Incident response:** route tables, interface state, captures, and change records help investigate reachability issues.
+- **Change control:** expected routes, validation steps, and rollback plans make changes easier to review.
 
-**Lab tools discussed:** Cisco IOS or a compatible router simulator, VirtualBox, Wireshark, ping, traceroute/tracert, and iPerf3. The repository's Python simulator is standalone and does not configure real routers or generate network traffic.
+This repository is **not** a security scanner or production routing engine. It does not detect route hijacking, audit firewall policy, query real devices, or establish that a network is secure. Use router commands only in a lab or environment where you have explicit authorization.
+
+## Original academic reports
+
+- [PDF report](./LPM_Report%20.pdf)
+- [Editable DOCX report](./LPM_Report%20TC.docx)
 
 ## Scope and limitations
 
-- The simulator supports IPv4 routes only.
-- It demonstrates prefix selection and a simple metric tie-break; it is not a full routing protocol implementation.
-- It does not model ARP/ND, ACLs, NAT, routing protocol convergence, administrative distance, policy routing, or actual packet forwarding.
-- Router commands in the guide are examples for an isolated, authorized lab. Adapt interface names and next hops to your topology.
+- IPv4 only; IPv6 addresses and networks are rejected.
+- Uses longest-prefix selection and a simplified metric tie-break.
+- Does not model routing protocols, administrative distance, policy-based routing, ECMP, ARP, ACLs, NAT, convergence, or real packet forwarding.
+- Next-hop and interface fields are descriptive labels; the simulator does not check their reachability.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Add or update tests when changing behavior, run the suite locally, and clearly distinguish simulated examples from observations collected in an authorized lab.
 
 ## Author
 
-**Atharva Kulkarni**  
-B.Tech Computer Science & Engineering — Information Security  
-G M University, Davangere
-
-[GitHub profile](https://github.com/Atharva-ark06)
+**Atharva Kulkarni** · B.Tech Computer Science & Engineering (Information Security)  
+G M University, Davangere · [GitHub](https://github.com/Atharva-ark06)
 
 ---
 
-**Configure • Compare • Capture • Analyze**
-
-
-## Extended project documentation
-
-The links below expand on the project's purpose, implementation, setup, workflows, and security context.
-
-### Project and implementation
-- [Project overview and objectives](docs/project-overview.md)
-- [Architecture and data flow](docs/architecture.md)
-- [Implementation walkthrough](docs/implementation-walkthrough.md)
-- [Learning roadmap](docs/learning-roadmap.md)
-- [Glossary](docs/glossary.md)
-- [FAQ](docs/faq.md)
-- [Further reading and references](docs/references.md)
-
-### Setup, workflow, and evidence
-- [Cross-platform setup guide](docs/setup-guide.md)
-- [End-to-end workflow](docs/workflow.md)
-- [Validation and evidence guide](docs/validation-and-evidence.md)
-- [Lab report template](docs/lab-report-template.md)
-- [Use cases](docs/use-cases.md)
-- [Network design examples](docs/network-design-examples.md)
-
-### Security learning folder
-- [Security resources overview](security/README.md)
-- [Security relevance of LPM](docs/security-relevance.md)
-- [Routing threat-model exercise](docs/threat-model.md)
-- [Defensive route review checklist](security/route-review-checklist.md)
-- [Incident-response tabletop exercise](security/incident-response-exercise.md)
-- [Routing change and rollback template](security/routing-change-plan-template.md)
-
-### Additional route-table examples
-- [No default route](examples/no-default-route.json)
-- [Equal-prefix metric tie-break](examples/equal-prefix-metrics.json)
-- [Campus segmentation scenario](examples/campus-segmentation.json)
-
-These materials explain routing and security concepts; they do not imply that a real router was configured or a packet capture was collected. Keep simulated examples separate from observations made in your own authorized lab.
+**Configure · Compare · Capture · Analyze**
