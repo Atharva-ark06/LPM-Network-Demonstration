@@ -1,0 +1,20 @@
+[
+  {
+    "network": "192.0.2.0/24",
+    "next_hop": "198.51.100.1",
+    "interface": "DMZ",
+    "metric": 10
+  },
+  {
+    "network": "192.0.2.64/26",
+    "next_hop": "198.51.100.2",
+    "interface": "DMZ-APP",
+    "metric": 20
+  },
+  {
+    "network": "0.0.0.0/0",
+    "next_hop": "198.51.100.254",
+    "interface": "EDGE",
+    "metric": 100
+  }
+]
