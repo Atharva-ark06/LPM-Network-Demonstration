@@ -24,11 +24,20 @@ Unexpected prefixes, stale static routes, and an unintended default route can pr
 
 Before applying a routing change, document the intended destination prefixes, expected next hop, rollback plan, and validation commands. Afterward, compare the route table and test only approved paths.
 
-## What this project can and cannot demonstrate
+## Security claims: what is and is not established
 
-The simulator can demonstrate which example route wins for a given IPv4 destination. It can help explain overlapping routes and a simple metric tie-break among equal-length prefixes.
+The simulator can demonstrate which example route wins for a given IPv4 destination. It can help explain overlapping routes and a simple metric tie-break among equal-length prefixes. Input validation reduces malformed route-table data being silently accepted by this educational tool.
 
-It cannot determine whether a real network is secure, whether a firewall rule is correct, whether a route was maliciously injected, or whether a packet traversed an inspection device. Those conclusions require real configuration, telemetry, and context.
+That does **not** establish any of the following:
+
+- **No vulnerability finding:** this project does not scan systems, enumerate live routes, or detect vulnerabilities.
+- **No route-hijack detection:** it does not inspect BGP, validate route origins, or identify malicious route advertisements.
+- **No firewall or ACL assessment:** it does not parse or evaluate real access-control policies.
+- **No reachability proof:** it does not test whether a next hop is reachable or whether a destination can actually be reached.
+- **No packet-path proof:** it does not configure a router, forward packets, or prove traffic crossed a firewall, IDS/IPS, or monitoring point.
+- **No compliance claim:** the test suite is not a certification, audit, or formal assurance result.
+
+A passing unit test means only that the tested software behavior matched its expected result for that test case.
 
 ## Defensive review questions
 
@@ -39,7 +48,8 @@ It cannot determine whether a real network is secure, whether a firewall rule is
 - Are both forward and return paths understood?
 - Is there a tested rollback path for the change?
 - Are route changes recorded in an approved change-management system?
+- Are observations backed by actual device output rather than inferred from the simulator?
 
 ## Safe-use note
 
-Use this repository to learn and model decisions. Perform router configuration only in a lab or environment where you have explicit authorization. Never test route changes on production infrastructure without approval.
+Use this repository to learn and model decisions. Perform router configuration only in a lab or environment where you have explicit authorization. Never test route changes on production infrastructure without approval. Remove secrets and sensitive network details before publishing evidence.
