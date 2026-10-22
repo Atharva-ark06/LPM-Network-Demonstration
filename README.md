@@ -1,169 +1,109 @@
 # 🌐 LPM Network Demonstration
 
-<div align="center">
+**An educational lab for understanding IPv4 Longest Prefix Match (LPM), routing-table decisions, and packet observation.**
 
-### **Longest Prefix Match — Network Routing Experiment** 
+This repository pairs the original project report with a small Python simulator, automated tests, and practical lab notes. It is designed for networking and information-security students learning how a router chooses the most specific matching route.
 
-A practical demonstration of how routers identify and select the **most specific route** when multiple network prefixes match a destination IP.
+## What is included
 
-![Cisco](https://img.shields.io/badge/Cisco%20IOS-1E40AF?style=for-the-badge\&logo=cisco\&logoColor=white)
-![Wireshark](https://img.shields.io/badge/Wireshark-1677FF?style=for-the-badge\&logo=wireshark\&logoColor=white)
-![Networking](https://img.shields.io/badge/Networking-LPM-7C3AED?style=for-the-badge)
+- **IPv4 LPM simulator** — evaluate a destination against a JSON routing table.
+- **Example routes** — overlapping prefixes and a default route to make the selection visible.
+- **Unit tests** — cover prefix precedence, metrics, default/no-route behavior, and invalid input.
+- **Lab guides** — router inspection examples, Wireshark filters, troubleshooting, and core concepts.
+- **Original reports** — the submitted PDF report and editable document.
 
-</div>
+## Quick start
 
----
-
-## 🧠 Overview
-  
-**Longest Prefix Match (LPM)** is a core concept in IP routing. When a destination IP matches multiple entries in a routing table, the router chooses the route with the **longest matching prefix**, as it represents the most specific network.
-
-This project demonstrates the concept through a virtual network environment using **Cisco IOS, VirtualBox, and Wireshark**.
-
----
-```
-```
-## 🎯 Objectives
-
-* Understand the **Longest Prefix Match** mechanism.
-* Configure and test overlapping network prefixes.
-* Observe router routing-table decisions.
-* Generate and capture network traffic.
-* Analyze packets using **Wireshark**.
-* Verify how the most specific route is selected.
-
----
-
-## 🔬 LPM Demonstration
-
-The experiment uses multiple overlapping prefixes:
-
-```text
-10.0.0.0/12
-10.0.0.0/16
-10.0.1.0/24
-10.0.1.128/25
-```
-
-For a destination matching more than one network:
-
-```text
-             Destination IP
-                    │
-                    ▼
-        ┌─────────────────────┐
-        │   Routing Table     │
-        └──────────┬──────────┘
-                   │
-       ┌───────────┼───────────┐
-       ▼           ▼           ▼
-     /12         /16         /24 ... /25
-       │           │           │
-       └───────────┴───────────┘
-                   │
-                   ▼
-          Longest Prefix Wins ✓
-```
-
-### Example
-
-If a destination matches `/12`, `/16`, `/24`, and `/25`, the router selects **/25** because it provides the most specific match.
-
-```text
-/12  <  /16  <  /24  <  /25
-Broadest                 Specific
-```
-
----
-
-## ⚙️ Experimental Workflow
-
-```text
-Network Design
-      ↓
-Router Configuration
-      ↓
-Overlapping Routes
-      ↓
-Traffic Generation
-      ↓
-Packet Capture
-      ↓
-Wireshark Analysis
-      ↓
-LPM Verification
-```
-
-Connectivity and traffic can be tested using:
+Requirements: **Python 3.10+**. The simulator uses only the Python standard library; no package installation is needed.
 
 ```bash
-ping <destination-ip>
-tracert <destination-ip>
-iperf3
+git clone https://github.com/Atharva-ark06/LPM-Network-Demonstration.git
+cd LPM-Network-Demonstration
+
+python lpm_simulator.py 10.0.1.200
+python lpm_simulator.py 10.0.1.20
+python lpm_simulator.py 203.0.113.9
 ```
 
----
+The example route table is `routes.example.json`. To use your own route table:
 
-## 🦈 Packet Analysis
+```bash
+python lpm_simulator.py 10.0.1.200 --routes routes.example.json
+```
 
-**Wireshark** is used to capture and inspect packets generated during the experiment.
+Run the test suite:
 
-The captured traffic helps observe the communication path and correlate network traffic with the routing decisions made by the router.
+```bash
+python -m unittest discover -s tests -v
+```
 
----
+## Example: why the longest prefix wins
 
-## 🛠️ Tools & Technologies
+The example table includes these overlapping networks:
 
-| Tool                     | Purpose                        |
-| ------------------------ | ------------------------------ |
-| 🖥️ **VirtualBox**       | Virtual networking environment |
-| 🌐 **Cisco IOS**         | Router configuration           |
-| 🦈 **Wireshark**         | Packet capture & analysis      |
-| 📡 **iPerf3**            | Traffic generation             |
-| 💻 **Ping / Traceroute** | Connectivity & path testing    |
+| Route | Meaning |
+| --- | --- |
+| `10.0.0.0/12` | Broad match |
+| `10.0.0.0/16` | More specific match |
+| `10.0.1.0/24` | Still more specific |
+| `10.0.1.128/25` | Most specific match for the upper half of the /24 |
+| `0.0.0.0/0` | Default route if no more-specific route matches |
 
----
+For destination `10.0.1.200`, the selected route is `10.0.1.128/25`. For `10.0.1.20`, the `/25` does not match, so `10.0.1.0/24` wins. For `203.0.113.9`, the example default route is selected.
 
-## 📁 Repository Structure
+The simulator chooses the greatest matching prefix length first. For equal prefix lengths, it chooses the lowest configured metric; equal metrics retain the first route in the file. This is an educational model, not a complete implementation of a router's route-selection policy.
+
+## Lab workflow
 
 ```text
-LPM-Network-Demonstration/
-│
-├── 📄 LPM_Report.pdf
-│
-├── 📝 LPM_Report TC.docx
-│
-└── 📖 README.md
+Inspect topology and routes
+          ↓
+Run a destination lookup
+          ↓
+Compare with router route-table output
+          ↓
+Generate test traffic in an isolated lab
+          ↓
+Capture and inspect packets in Wireshark
+          ↓
+Record evidence and conclusions
 ```
 
-📑 **[View the Complete Project Report](./LPM_Report%20.pdf)**
+**Important:** a packet capture can show traffic on the observed interface, but it does not directly expose the router's internal LPM decision. Correlate capture evidence with the router's own routing-table lookup. Only mark the physical/virtual lab as completed after collecting actual outputs.
 
----
+## Documentation
 
-## 📚 Key Concepts
+- [LPM fundamentals and worked examples](docs/lpm-fundamentals.md)
+- [Step-by-step lab guide](docs/lab-guide.md)
+- [Wireshark filter reference](docs/wireshark-filters.md)
+- [Troubleshooting](docs/troubleshooting.md)
 
-`IP Routing` • `CIDR` • `Subnetting` • `Routing Tables` • `Longest Prefix Match` • `Packet Forwarding` • `Network Analysis`
+## Original project reports
 
----
+- [Open the PDF report](./LPM_Report%20.pdf)
+- [Open the editable report (DOCX)](./LPM_Report%20TC.docx)
 
-## 👨‍💻 Author
+## Tools and concepts
 
-**Atharva Kulkarni**
-B.Tech Computer Science & Engineering — Information Security
+**Concepts:** IPv4 routing, CIDR, subnetting, routing tables, prefix matching, packet forwarding, traffic inspection.
+
+**Lab tools discussed:** Cisco IOS or a compatible router simulator, VirtualBox, Wireshark, ping, traceroute/tracert, and iPerf3. The repository's Python simulator is standalone and does not configure real routers or generate network traffic.
+
+## Scope and limitations
+
+- The simulator supports IPv4 routes only.
+- It demonstrates prefix selection and a simple metric tie-break; it is not a full routing protocol implementation.
+- It does not model ARP/ND, ACLs, NAT, routing protocol convergence, administrative distance, policy routing, or actual packet forwarding.
+- Router commands in the guide are examples for an isolated, authorized lab. Adapt interface names and next hops to your topology.
+
+## Author
+
+**Atharva Kulkarni**  
+B.Tech Computer Science & Engineering — Information Security  
 G M University, Davangere
 
-[![GitHub](https://img.shields.io/badge/GitHub-Atharva--ark06-181717?style=flat-square\&logo=github)](https://github.com/Atharva-ark06)
+[GitHub profile](https://github.com/Atharva-ark06)
 
 ---
-## Clone project 
-```
-git clone https://github.com/Atharva-ark06/LPM-Network-Demonstration.git
 
-```
-<div align="center">
-
-### 🌐 **Configure • Capture • Analyze • Understand**
-
-⭐ *A practical exploration of IP routing and Longest Prefix Match.*
-
-</div>
+**Configure • Compare • Capture • Analyze**
